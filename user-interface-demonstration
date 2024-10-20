@@ -1,0 +1,466 @@
+import warnings
+
+# Suppressing User Warnings
+warnings.filterwarnings("ignore", category=UserWarning, message=".*matplotlib.legend.*")
+
+import os
+import pandas as pd
+import ipywidgets as widgets
+from IPython.display import display, clear_output
+from google.colab import drive
+import random
+import matplotlib.pyplot as plt
+
+drive.mount('/content/drive')
+
+UPLOAD_FOLDER = '/content/drive/MyDrive/Tilia_NLP_Project/Uploaded_Files'
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+upload_button = widgets.FileUpload(
+    accept='.txt',
+    multiple=True
+)
+upload_button.label = "Upload"
+
+def upload_files(change):
+    for name, file_info in upload_button.value.items():
+        file_path = os.path.join(UPLOAD_FOLDER, name)
+        with open(file_path, 'wb') as file:
+            file.write(file_info['content'])
+    upload_button.label = "Upload"  # Reset label to "Upload"
+
+upload_button.observe(upload_files, names='value')
+
+file_path1 = '/content/drive/MyDrive/Tilia_NLP_Project/Final Data with All Years + All Companies/keyword_detection.csv'
+file_path2 = '/content/drive/MyDrive/Tilia_NLP_Project/Final Data with All Years + All Companies/shorter_list_of_meaningful_keywords.csv'
+file_path3 = '/content/drive/MyDrive/Tilia_NLP_Project/Final Data with All Years + All Companies/topic_year_quarter_summary.csv'
+file_path4 = '/content/drive/MyDrive/Tilia_NLP_Project/Final Data with All Years + All Companies/company_year_quarter_summary.csv'
+file_path5 = '/content/drive/MyDrive/Tilia_NLP_Project/Final Data with All Years + All Companies/topic_detection_with_sentiment.csv'
+file_path6 = '/content/drive/MyDrive/Tilia_NLP_Project/Final Data with All Years + All Companies/overall_sentiment_for_keywords.csv'
+
+
+keyword_df = pd.read_csv(file_path1)
+final_keywords = pd.read_csv(file_path2)
+topic_sum_df = pd.read_csv(file_path3)
+summary_df = pd.read_csv(file_path4)
+df = pd.read_csv(file_path5)
+keysent_df = pd.read_csv(file_path6)
+
+topics = pd.concat([df['Topic 1'], df['Topic 2']]).unique()
+
+
+result_data = []
+
+# Function to calculate New Sentiment Score
+def calculate_new_sentiment_score(sentiments, scores):
+    new_sentiment_score = 0
+    for sentiment, score in zip(sentiments, scores):
+        if sentiment == 'positive':
+            new_sentiment_score += score
+        elif sentiment == 'negative':
+            new_sentiment_score -= score
+        elif sentiment == 'neutral':
+            new_sentiment_score += score / 2
+    return new_sentiment_score
+
+# Iterate through each unique topic
+for topic in topics:
+    # Filter rows containing the topic in either 'Topic 1' or 'Topic 2'
+    topic_df = df[(df['Topic 1'] == topic) | (df['Topic 2'] == topic)]
+
+    # Group by 'Year' and 'Quarter' and calculate New Sentiment Score
+    grouped = topic_df.groupby(['Year', 'Quarter'])
+    for (year, quarter), group in grouped:
+        sentiments = group['Sentiment']
+        scores = group['Score']
+
+        new_sentiment_score = calculate_new_sentiment_score(sentiments, scores)
+
+        if new_sentiment_score < 0.3:
+            sentiment_label = 'negative'
+        elif new_sentiment_score <= 0.7:
+            sentiment_label = 'neutral'
+        else:
+            sentiment_label = 'positive'
+
+        frequency = len(group)
+
+        result_data.append({
+            'Topic': topic,
+            'Year': year,
+            'Quarter': quarter,
+            'New Sentiment Score': new_sentiment_score,
+            'Sentiment Label': sentiment_label,
+            'Frequency': frequency
+        })
+
+
+sentiment_topic = pd.DataFrame(result_data)
+
+sentiment_topic = sentiment_topic[sentiment_topic['Topic'] != 'Null']
+sentiment_topic = sentiment_topic[sentiment_topic['Quarter'] != 'Unknown']
+
+topic_sum_df = topic_sum_df[topic_sum_df['Quarter'] != 'Unknown']
+topic_sum_df = topic_sum_df[topic_sum_df['Topic 1'] != 'Null']
+topic_sum_df = topic_sum_df[topic_sum_df['Year'] != 'Unknown']
+
+
+# Calculate the Percentile to know where the New Sentiment Score falls under holistically
+sentiment_topic['Percentile Sentiment'] = sentiment_topic['New Sentiment Score'].rank(pct=True)
+
+keyword_df['Company'] = keyword_df['Company'].str.title()
+summary_df['Company'] = summary_df['Company'].str.title()
+
+filtered_keyword_df = keyword_df.merge(final_keywords[['Keyword']], on='Keyword', how='inner')
+
+companies = filtered_keyword_df['Company'].unique()
+years = sorted(filtered_keyword_df['Year'].unique())
+
+
+quarters = [quarter for quarter in filtered_keyword_df['Quarter'].unique() if quarter.lower() != 'unknown']
+
+company_buttons = [widgets.ToggleButton(description=company, value=False, layout=widgets.Layout(margin='2px', width='150px')) for company in companies]
+year_buttons = [widgets.ToggleButton(description=str(year), value=False, layout=widgets.Layout(margin='2px')) for year in years]
+quarter_buttons = [widgets.ToggleButton(description=quarter, value=False, layout=widgets.Layout(margin='2px')) for quarter in quarters]
+
+# Keyword buttons
+keyword_container = widgets.VBox([], layout=widgets.Layout(width='60%'))
+result_container = widgets.VBox([], layout=widgets.Layout(width='40%'))
+summary_container = widgets.VBox(layout=widgets.Layout(width='40%'))
+
+# Sentiment outlook filter buttons
+negative_outlook_button = widgets.ToggleButton(
+    description="Negative Outlook",
+    value=False,
+    layout=widgets.Layout(margin='2px', width='150px'),
+    style={'button_color': '#f4cccc'}
+)
+
+positive_outlook_button = widgets.ToggleButton(
+    description="Positive Outlook",
+    value=False,
+    layout=widgets.Layout(margin='2px', width='150px'),
+    style={'button_color': '#cfe2f3'}
+)
+
+clear_filters_button = widgets.Button(
+    description="Clear All Keyword Filters",
+    layout=widgets.Layout(margin='2px', width='200px')
+)
+
+def clear_all_filters(b):
+    for btn in company_buttons + year_buttons + quarter_buttons + [negative_outlook_button, positive_outlook_button]:
+        btn.value = False
+    summary_container.children = [widgets.HTML(value="")]  
+    result_container.children = [] 
+    keyword_container.children = [widgets.HTML(value="<p>Please select companies, years, or quarters of interest to review trending keywords.</p>")]
+
+clear_filters_button.on_click(clear_all_filters)
+
+def on_keyword_filter_change(change):
+    selected_companies = [btn.description for btn in company_buttons if btn.value]
+    selected_years = [int(btn.description) for btn in year_buttons if btn.value]
+    selected_quarters = [btn.description for btn in quarter_buttons if btn.value]
+
+    # filter conditions
+    filtered_df_filtered = filtered_keyword_df
+    if selected_companies or selected_years or selected_quarters or negative_outlook_button.value or positive_outlook_button.value:
+        if selected_companies:
+            filtered_df_filtered = filtered_df_filtered[filtered_df_filtered['Company'].isin(selected_companies)]
+        if selected_years:
+            filtered_df_filtered = filtered_df_filtered[filtered_df_filtered['Year'].isin(selected_years)]
+        if selected_quarters:
+            filtered_df_filtered = filtered_df_filtered[filtered_df_filtered['Quarter'].isin(selected_quarters)]
+
+        if negative_outlook_button.value:
+            filtered_df_filtered = filtered_df_filtered[filtered_df_filtered['Keyword'].isin(
+                keysent_df[keysent_df['Sentiment'] == 'negative']['Keyword'])]
+        if positive_outlook_button.value:
+            filtered_df_filtered = filtered_df_filtered[filtered_df_filtered['Keyword'].isin(
+                keysent_df[keysent_df['Sentiment'] == 'positive']['Keyword'])]
+
+        # Displaying summary only if a company and a year are selected
+        if selected_companies and selected_years:
+            summary_html = ""
+            for company in selected_companies:
+                for year in selected_years:
+                    for quarter in selected_quarters or [None]:
+                        summary_row = summary_df
+                        summary_row = summary_row[(summary_row['Company'] == company) & (summary_row['Year'] == year)]
+                        if quarter:
+                            summary_row = summary_row[summary_row['Quarter'] == quarter]
+                        if not summary_row.empty:
+                            for _, row in summary_row.iterrows():
+                                summary = row['Summary']
+                                summary_html += f"<div><b>{row['Company']} {row['Year']} {row['Quarter']}:</b> {summary}</div><br>"
+            if summary_html:
+                summary_container.children = [widgets.HTML(value=summary_html)]
+            else:
+                summary_container.children = [widgets.HTML(value="<p>Please select companies, years, or quarters of interest to review trending keywords.</p>")]
+        else:
+            summary_container.children = [widgets.HTML(value="<p>Select at least one company and one year to review summaries!</p>")]
+    else:
+        filtered_df_filtered = pd.DataFrame(columns=filtered_keyword_df.columns)
+        summary_container.children = [widgets.HTML(value="<p>Please select companies, years, or quarters of interest to review trending keywords.</p>")]
+
+    display_keyword_boxes(filtered_df_filtered)
+
+def get_sentiment_emoji(sentiment):
+    if sentiment is None:
+        return ''
+    elif sentiment == 'positive':
+        return '😊'
+    elif sentiment == 'negative':
+        return '☹️'
+    elif sentiment == 'neutral':
+        return '😐'
+    return ''
+
+
+def display_keyword_boxes(df):
+    keywords = df['Keyword'].unique()
+    if len(keywords) == 0:
+        keyword_container.children = [widgets.HTML(value="<p>Please select companies, years, or quarters of interest to review trending keywords.</p>")]
+        result_container.children = []  
+    else:
+        keywords = list(keywords)
+        random.shuffle(keywords)
+
+        keyword_buttons = [
+            widgets.Button(
+                description=keyword,
+                layout=widgets.Layout(min_width='250px', max_width='auto', padding='5px', height='auto'),  
+                style={'text-align': 'center', 'white-space': 'normal'}  
+            ) for keyword in keywords
+        ]
+
+        keyword_rows = [widgets.HBox(keyword_buttons[i:i + 3], layout=widgets.Layout(width='100%')) for i in range(0, len(keyword_buttons), 3)]
+
+        keyword_container.children = keyword_rows
+        result_container.children = []  
+
+
+        def on_keyword_click(b):
+            keyword = b.description
+            matching_rows = df[df['Keyword'] == keyword]
+
+            result_content = []
+            for _, row in matching_rows.iterrows():
+                result_content.append(widgets.HTML(f"<div><b>{row['Company']}</b> <b>{row['Year']}</b> <b>{row['Quarter']}: </b> {row['Sentence']}</div>"))
+
+            sentiment_row = keysent_df[keysent_df['Keyword'] == keyword]
+            if not sentiment_row.empty:
+                sentiment = sentiment_row['Sentiment'].values[0]
+                emoji = get_sentiment_emoji(sentiment)
+                percentile = round(sentiment_row['Percentile'].values[0], 2)
+                result_content.append(widgets.HTML(f"<div>{emoji} {percentile}</div>"))
+
+            result_container.children = result_content
+            summary_container.children = []  
+
+        for btn in keyword_buttons:
+            btn.on_click(on_keyword_click)
+
+def on_outlook_button_change(change):
+    if change['owner'] == positive_outlook_button and change['new']:
+        negative_outlook_button.value = False
+    elif change['owner'] == negative_outlook_button and change['new']:
+        positive_outlook_button.value = False
+
+negative_outlook_button.observe(on_outlook_button_change, 'value')
+positive_outlook_button.observe(on_outlook_button_change, 'value')
+
+for btn in company_buttons + year_buttons + quarter_buttons + [negative_outlook_button, positive_outlook_button]:
+    btn.observe(on_keyword_filter_change, 'value')
+
+ui_header = widgets.HTML(value="<h1>Trend Analysis from Earnings Call Transcripts</h1>")
+ui_subheader = widgets.HTML(value="<h2>Talk of the Town: Hot Topics of Discussion</h2>")
+
+company_box = widgets.HBox(company_buttons, layout=widgets.Layout(margin='5px 0'))
+year_quarter_box = widgets.VBox([
+    widgets.HBox(year_buttons, layout=widgets.Layout(margin='5px 0')),
+    widgets.HBox(quarter_buttons, layout=widgets.Layout(margin='5px 0')),
+    widgets.HBox([negative_outlook_button, positive_outlook_button, clear_filters_button], layout=widgets.Layout(margin='5px 0'))
+])
+
+# Stack the result and summary containers vertically
+result_summary_container = widgets.VBox([result_container, summary_container], layout=widgets.Layout(min_width='auto', max_width='600px', padding='5px', height='auto'))
+
+# Plotting sentiment and frequency graphs
+def update_graphs(selected_topics, selected_years, selected_quarters):
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(18, 6))
+
+    if not selected_topics and not selected_years:
+        sentiment_graph_output.clear_output()
+        with sentiment_graph_output:
+            display(widgets.HTML(value="<p>Please select a Topic, Year, or a combination of both to see the sentiment and frequency graphs.</p>"))
+        return
+
+    if not selected_topics:
+        selected_topics = sentiment_topic['Topic'].unique()
+    if not selected_years:
+        selected_years = sentiment_topic['Year'].unique()
+
+    plot_df = sentiment_topic[(sentiment_topic['Topic'].isin(selected_topics)) & (sentiment_topic['Year'].isin(selected_years))]
+
+    if plot_df.empty:
+        sentiment_graph_output.clear_output()
+        with sentiment_graph_output:
+            display(widgets.HTML(value="<p>No data available for the selected filters.</p>"))
+        return
+
+    plot_df = plot_df.copy()  # Added a "make a copy" step due to SettingWithCopyWarning message popping up
+
+    # Mapping for start date of each quarter
+    quarter_start_dates = {
+        'Q1': '01-01',  # January 1st
+        'Q2': '04-01',  # April 1st
+        'Q3': '07-01',  # July 1st
+        'Q4': '10-01'   # October 1st
+    }
+
+    def get_start_date(row):
+        return f"{row['Year']}-{quarter_start_dates[row['Quarter']]}"
+
+    plot_df['Date'] = plot_df.apply(get_start_date, axis=1)
+    plot_df['Date'] = pd.to_datetime(plot_df['Date'], format='%Y-%m-%d')
+    plot_df = plot_df.sort_values(by=['Topic', 'Date'])
+
+    global_max_sentiment = sentiment_topic['New Sentiment Score'].max()
+    global_min_sentiment = sentiment_topic['New Sentiment Score'].min()
+    global_max_frequency = sentiment_topic['Frequency'].max()
+
+    for topic in plot_df['Topic'].unique():
+        topic_df = plot_df[plot_df['Topic'] == topic].copy()
+
+        topic_df = topic_df.sort_values('Date')
+
+        ax1.plot(topic_df['Date'], topic_df['New Sentiment Score'], label=topic)
+        ax2.plot(topic_df['Date'], topic_df['Frequency'], label=topic)
+
+    ax1.set_xlabel('Year-Quarter')
+    ax1.set_ylabel('Sentiment Score')
+    ax1.set_title('Sentiment Score Over Time')
+    ax1.legend(title='Topics', bbox_to_anchor=(1.05, 1), loc='upper left')
+    for label in ax1.get_xticklabels():
+        label.set_rotation(45)
+
+    ax2.set_xlabel('Year-Quarter')
+    ax2.set_ylabel('Frequency')
+    ax2.set_title('Frequency Over Time')
+    ax2.legend(title='Topics', bbox_to_anchor=(1.05, 1), loc='upper left')
+    for label in ax2.get_xticklabels():
+        label.set_rotation(45)
+
+    ax1.set_ylim(global_min_sentiment, global_max_sentiment)
+    ax2.set_ylim(0, global_max_frequency)
+
+    plt.tight_layout()
+    sentiment_graph_output.clear_output()
+    with sentiment_graph_output:
+        display(fig)
+    plt.close(fig)
+
+
+sentiment_graph_output = widgets.Output()
+
+# Future forecasting filters using `topic_sum_df`
+topics = topic_sum_df['Topic 1'].unique()
+topic_buttons = [widgets.ToggleButton(description=topic, value=False, layout=widgets.Layout(margin='2px')) for topic in topics]
+
+future_years = topic_sum_df['Year'].unique()
+future_year_buttons = [widgets.ToggleButton(description=str(year), value=False, layout=widgets.Layout(margin='2px')) for year in future_years]
+
+future_quarters = topic_sum_df['Quarter'].unique()
+future_quarter_buttons = [widgets.ToggleButton(description=quarter, value=False, layout=widgets.Layout(margin='2px')) for quarter in future_quarters]
+
+
+forecast_result_container = widgets.VBox([])
+
+def on_forecast_filter_change(change):
+    selected_topics = [btn.description for btn in topic_buttons if btn.value]
+    selected_future_years = [int(btn.description) for btn in future_year_buttons if btn.value]
+    selected_future_quarters = [btn.description for btn in future_quarter_buttons if btn.value]
+
+    filtered_df = topic_sum_df
+    if selected_topics:
+        filtered_df = filtered_df[filtered_df['Topic 1'].isin(selected_topics)]
+    if selected_future_years:
+        filtered_df = filtered_df[filtered_df['Year'].isin(selected_future_years)]
+    if selected_future_quarters:
+        filtered_df = filtered_df[filtered_df['Quarter'].isin(selected_future_quarters)]
+
+    display_forecast_results(filtered_df)
+    update_graphs(selected_topics, selected_future_years, selected_future_quarters)
+
+def display_forecast_results(df):
+    if df.empty:
+        forecast_result_container.children = [widgets.HTML(value="<p>No data available for the selected filters.</p>")]
+    else:
+        forecast_content = []
+        for _, row in df.iterrows():
+            forecast_content.append(widgets.HTML(f"<div><b>{row['Topic 1']}</b> <b>{row['Year']}</b> <b>{row['Quarter']}</b>: {row['Summary']}</div>"))
+        forecast_result_container.children = forecast_content
+
+for btn in topic_buttons + future_year_buttons + future_quarter_buttons:
+    btn.observe(on_forecast_filter_change, 'value')
+
+sentiment_graph_container = widgets.VBox([sentiment_graph_output])
+
+future_forecast_container = widgets.VBox([
+    widgets.HTML(value="<h2>Market Outlook: Investment Topics of Interest</h2>"),
+    widgets.HBox(topic_buttons, layout=widgets.Layout(margin='5px 0')),
+    widgets.HBox(future_year_buttons, layout=widgets.Layout(margin='5px 0')),
+    widgets.HBox(future_quarter_buttons, layout=widgets.Layout(margin='5px 0')),
+    sentiment_graph_container,
+    forecast_result_container
+])
+
+
+# "Back to the Top" button
+back_to_top_button = widgets.Button(
+    description="Back to the Top",
+    layout=widgets.Layout(margin='2px', width='200px'),
+    style={'button_color': '#B6D7A8', 'color': 'white'}
+)
+
+from IPython.display import HTML
+
+# CSS styles
+css = """
+<style>
+    .negative-button {
+        background-color: #f4cccc !important;
+        color: black;
+    }
+    .positive-button {
+        background-color: #cfe2f3 !important;
+        color: black;
+    }
+</style>
+"""
+
+display(HTML(css))
+
+negative_outlook_button.add_class("negative-button")
+positive_outlook_button.add_class("positive-button")
+
+
+from IPython.display import display, Javascript
+
+def on_back_to_top_click(b):
+    display(Javascript('window.scrollTo(0, 0);'))
+
+back_to_top_button.on_click(on_back_to_top_click)
+
+future_forecast_container.children += (back_to_top_button,)
+
+display(ui_header, upload_button, ui_subheader, company_box, year_quarter_box, widgets.HTML("<div style='height:10px;'></div>"), widgets.HBox([keyword_container, result_summary_container], layout=widgets.Layout(align_items='flex-start', width='100%')))
+display(future_forecast_container)
+
+empty_df = pd.DataFrame(columns=filtered_keyword_df.columns)
+display_keyword_boxes(empty_df)
+
+sentiment_graph_output.clear_output()
+with sentiment_graph_output:
+    display(widgets.HTML(value="<p>Please select a Topic, Year, or a combination of both to see the sentiment graph.</p>"))
