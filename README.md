@@ -60,7 +60,7 @@ financial conversations, providing a solid foundation for our analysis. This cho
 overall integrity and reliability of the insights generated from the dataset.
 
 
-![Earnings Call Transcript Images](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/Intro_Image.webp](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/Earnings%20Call%20Transcript%20Images.png)
+![Earnings Call Transcript Images](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/Earnings%20Call%20Transcript%20Images.png)
 
 
 ### Feature Engineering
