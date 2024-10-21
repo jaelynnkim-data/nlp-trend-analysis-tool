@@ -1,7 +1,5 @@
 # [NLP-Based Industry Trend Analysis Tool Using Earnings Call Transcripts](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/NLP_Trend_Analysis_Code.ipynb)
 
-![Intro Image](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/Intro_Image.webp)
-
 ### Preface
 Tilia Holdings, a private equity firm specializing in investments in food manufacturing
 and distribution, was relying heavily on market research to guide investment decisions and enhance the
@@ -19,6 +17,8 @@ market conditions relevant to senior leaders in the food space. The tool not onl
 Tilia with a deeper understanding of growth initiatives but also offered valuable context for its
 existing portfolio companies, thereby enhancing the firm’s ability to make informed investment
 decisions.
+
+![Intro Image](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/Intro_Image.webp)
 
 ### Analysis Goals
 
@@ -174,7 +174,7 @@ confirming that the sentence compression improved the model’s performance, par
 distinguishing between positive and neutral sentiments.
 
 
-#### User Interface Demonstration
+## User Interface Demonstration
 ![UI Image 1](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/UI%20Image%201.png)
 ![UI Image 2](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/UI%20Image%202.png)
 
