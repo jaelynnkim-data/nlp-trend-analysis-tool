@@ -18,6 +18,11 @@ Tilia with a deeper understanding of growth initiatives but also offered valuabl
 existing portfolio companies, thereby enhancing the firm’s ability to make informed investment
 decisions.
 
+
+(https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/UI%20Image%201.png)
+(https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/UI%20Image%202.png)
+
+
 ### Analysis Goals
 
 The primary goal of this project was to equip Tilia Holdings with a powerful tool that
