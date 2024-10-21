@@ -39,8 +39,7 @@ The insights generated from this analysis were then integrated into an interacti
 allowed Tilia to efficiently explore and segment the data. The tool includes the following features:
 1. Filtering capabilities that allow for filtering on transcript release dates, strategic focus
 categories, and sentiment types.
-2. A list of key topics and trends associated with the filtered subset of data
-3. A term search bar
+2. Clickable box buttons containing key topics and trends associated with the filtered subset of data
 4. A visual depiction of patterns and movements of topics and sentiment
 
 
@@ -59,6 +58,10 @@ information make it ideal for this analysis, ensuring the accuracy and relevance
 discussions. By using Capital IQ, we can be confident that the data reflects the most pertinent
 financial conversations, providing a solid foundation for our analysis. This choice supports the
 overall integrity and reliability of the insights generated from the dataset.
+
+
+![Earnings Call Transcript Images]([https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/Intro_Image.webp](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/Earnings%20Call%20Transcript%20Images.png))
+
 
 ### Feature Engineering
 The feature engineering process focused on extracting meaningful information from
