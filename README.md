@@ -180,7 +180,99 @@ confirming that the sentence compression improved the model’s performance, par
 distinguishing between positive and neutral sentiments.
 
 
-## User Interface Demonstration
+#### Model Evaluation and Validation
+The implementation of the modeling framework led to several important insights, along
+with a thorough evaluation of the model's performance. The initial setup involved summarizing
+groups of sentences using the DistilBART model, followed by sentence compression and
+keyword extraction through Part-of-Speech (PoS) tagging. However, this approach proved
+inefficient, producing outputs filled with nonsensical words, missing key trend keywords, and resulting in excessive processing time. These issues necessitated a reevaluation of each step to
+ensure precision and computational efficiency.
+To refine the summarization process, an experiment was conducted with different
+sentence groupings, starting with 10 sentences per group and testing up to 50 sentences. The
+optimal grouping was found to be 20 sentences, balancing computational efficiency and the
+precision of summary results. This setup was validated through a manual comparison of
+paragraphs and their summaries.
+Further experimentation was carried out with four different summarization models—
+PEGASUS, BART, DistilBART, and T5—to determine which provided the best balance of
+speed and contextual accuracy. Through a combination of BLEU and ROUGE tests, T5-base
+emerged as the superior model, outperforming the others across key metrics. The BLEU scores
+were as follows: PEGASUS (0.0288), DistilBART (0.0344), BART (0.0388), and T5 (0.0475).
+Similarly, T5-base showed higher ROUGE scores, with a ROUGE-1 score of 0.3118, compared
+to BART’s 0.2892, DistilBART’s 0.2872, and PEGASUS’s 0.2487. These results confirmed that
+T5-base was not only faster but also more adept at capturing both the main message and any
+supporting anecdotes, leading to its selection as the final summarization model.
+
+
+![Comparison of Summarization Model Performance](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/Comparison%20of%20Summarization%20Model%20Performance.png)
+
+
+With the integration of T5-base, the sentence compression step became unnecessary for
+keyword extraction since the summaries already contained concise and potentially relevant keywords. This allowed a direct focus on keyword extraction, where n-grams were employed to
+capture multi-word terms that could not be recognized when isolated. PoS tagging was used to
+ensure the extraction process retained only meaningful grammatical sequences, enhancing the
+model’s ability to discard irrelevant n-grams.
+
+
+![N-gram Filtering and Extraction from Summarized Sentences](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/N-gram%20Filtering%20and%20Extraction%20from%20Summarized%20Sentences.png)
+
+
+In the keyword extraction process, an experiment was conducted with n-grams of various
+lengths, ranging from 1 to 7 words, to determine the optimal range for capturing meaningful
+keywords and terms. It was observed that n-grams longer than 5 words often resulted in phrases
+that were too lengthy and convoluted to convey concise and meaningful information. The smaller
+n-grams, particularly those ranging from 1 to 5 words, were sufficient to capture most of the key
+information within sentences. Consequently, the decision was made to limit the extraction to 1-
+to 5-grams, ensuring that the keywords generated were both precise and contextually relevant.
+
+
+The topic detection model was evaluated using a confusion matrix, comparing predicted
+topic labels against a manually labeled test set. The results revealed a high level of accuracy
+(0.9076), with strong performance in identifying topics such as "Food Safety" and "Divestiture." However, the model did show some misclassifications, such as confusing "Sustainability" with
+"Investment" and "Packaging." These errors highlighted areas for potential improvement,
+particularly in distinguishing between closely related topics. The confusion matrix provided
+insights into where the model excelled and where it needed refinement, particularly in handling
+class imbalances, such as the underrepresentation of the "Distribution" topic.
+
+
+![Confusion Matrix for Topic Detection Model Performance](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/Confusion%20Matrix%20for%20Topic%20Detection%20Model%20Performance.png)
+
+
+The initial sentiment analysis model, based on ProsusAI/finbert, demonstrated significant
+weaknesses, particularly in distinguishing between positive and neutral sentiments, with an
+accuracy score of only 0.2769 on a hand-labeled dataset. The model’s struggle to interpret
+sentences containing mixed sentiments necessitated a reconsideration of the approach. After
+testing both RoBERTa and FinancialBERT models, RoBERTa was selected for further enhancement because, despite its initial lower accuracy (0.6308), it significantly benefited from
+the integration of a sentence compression model. The accuracy of the RoBERTa model improved
+to 0.6846 when combined with sentence compression, highlighting the impact of this additional
+step in refining sentiment classification. 
+
+
+In contrast, the FinancialBERT model initially had a higher accuracy (0.6385) compared
+to RoBERTa alone. However, when coupled with the sentence compression model,
+FinancialBERT’s accuracy did not see the same level of improvement as RoBERTa, remaining
+at 0.6385. This outcome underscored the unique synergy between the RoBERTa model and
+sentence compression in handling the nuanced language found in earnings call transcripts,
+making RoBERTa with sentence compression the preferred choice for this task.
+
+
+![Accuracy Comparison of Sentiment Analysis Models](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/Accuracy%20Comparison%20of%20Sentiment%20Analysis%20Models.png)
+
+
+It is important to note that while the typical accuracy score for sentiment analysis models
+applied to more predictable text formats, such as product reviews or social media posts, typically
+ranges between 70% and 85%, the average accuracy for sentiment analysis on more unpredictable and complex text materials like earnings call transcripts or video transcriptions is
+generally lower, averaging between 60% and 75%. Given this context, the accuracy achieved by
+the RoBERTa model with sentence compression falls within the expected range for this type of
+challenging data, further validating the effectiveness of the approach in this specific application.
+Overall, the combination of model performance evaluations, supported by visualizations,
+provided a clear and actionable understanding of industry trends, risks, and opportunities,
+enabling informed investment decisions. Visualizations such as a confusion matrix for topic
+detection and a bar chart showing sentiment analysis accuracy improvement were instrumental in
+illustrating these findings.
+
+
+
+## User Interface 
 ![UI Image 1](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/UI%20Image%201.png)
 ![UI Image 2](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/UI%20Image%202.png)
 
