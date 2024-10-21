@@ -84,6 +84,9 @@ frame containing the company name, transcript year, transcript quarter, sentence
 sub-topic, sentiment label, sentiment score and keywords from each transcript.
 
 
+![Process Flow Images](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/Process%20Flow%20Image.png)
+
+
 ### Modeling Framework
 
 The modeling framework employed a robust combination of Natural Language
