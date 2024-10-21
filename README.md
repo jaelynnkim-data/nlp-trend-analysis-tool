@@ -19,8 +19,8 @@ existing portfolio companies, thereby enhancing the firm’s ability to make inf
 decisions.
 
 
-(https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/UI%20Image%201.png)
-(https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/UI%20Image%202.png)
+[UI Image 1](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/UI%20Image%201.png)
+[UI Image 2](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/UI%20Image%202.png)
 
 
 ### Analysis Goals
