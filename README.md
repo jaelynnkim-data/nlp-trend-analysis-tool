@@ -60,7 +60,7 @@ financial conversations, providing a solid foundation for our analysis. This cho
 overall integrity and reliability of the insights generated from the dataset.
 
 
-![Earnings Call Transcript Images](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/Earnings%20Call%20Transcript%20Images.png)
+![Earnings Call Transcript Images](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/Images%20for%20README/Earnings%20Call%20Transcript%20Images.png)
 
 
 ### Feature Engineering
@@ -84,7 +84,7 @@ frame containing the company name, transcript year, transcript quarter, sentence
 sub-topic, sentiment label, sentiment score and keywords from each transcript.
 
 
-![Process Flow Images](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/Process%20Flow%20Image.png)
+![Process Flow Images](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/Images%20for%20README/Process%20Flow%20Image.png)
 
 
 ### Modeling Framework
@@ -203,7 +203,7 @@ T5-base was not only faster but also more adept at capturing both the main messa
 supporting anecdotes, leading to its selection as the final summarization model.
 
 
-![Comparison of Summarization Model Performance](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/Comparison%20of%20Summarization%20Model%20Performance.png)
+![Comparison of Summarization Model Performance](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/Images%20for%20README/Comparison%20of%20Summarization%20Model%20Performance.png)
 
 
 With the integration of T5-base, the sentence compression step became unnecessary for
@@ -234,7 +234,7 @@ insights into where the model excelled and where it needed refinement, particula
 class imbalances, such as the underrepresentation of the "Distribution" topic.
 
 
-![Confusion Matrix for Topic Detection Model Performance](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/Confusion%20Matrix%20for%20Topic%20Detection%20Model%20Performance.png)
+![Confusion Matrix for Topic Detection Model Performance](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/Images%20for%20README/Confusion%20Matrix%20for%20Topic%20Detection%20Model%20Performance.png)
 
 
 The initial sentiment analysis model, based on ProsusAI/finbert, demonstrated significant
@@ -255,7 +255,7 @@ sentence compression in handling the nuanced language found in earnings call tra
 making RoBERTa with sentence compression the preferred choice for this task.
 
 
-![Accuracy Comparison of Sentiment Analysis Models](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/Accuracy%20Comparison%20of%20Sentiment%20Analysis%20Models.png)
+![Accuracy Comparison of Sentiment Analysis Models](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/Images%20for%20README/Accuracy%20Comparison%20of%20Sentiment%20Analysis%20Models.png)
 
 
 It is important to note that while the typical accuracy score for sentiment analysis models
@@ -273,8 +273,8 @@ illustrating these findings.
 
 
 ## User Interface 
-![UI Image 1](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/UI%20Image%201.png)
-![UI Image 2](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/UI%20Image%202.png)
+![UI Image 1](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/Images%20for%20README/UI%20Image%201.png)
+![UI Image 2](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/Images%20for%20README/UI%20Image%202.png)
 
 
 
