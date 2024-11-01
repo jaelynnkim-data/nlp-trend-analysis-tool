@@ -213,7 +213,7 @@ ensure the extraction process retained only meaningful grammatical sequences, en
 model’s ability to discard irrelevant n-grams.
 
 
-![N-gram Filtering and Extraction from Summarized Sentences](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/N-gram%20Filtering%20and%20Extraction%20from%20Summarized%20Sentences.png)
+![N-gram Filtering and Extraction from Summarized Sentences](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/Images%20for%20README/N-gram%20Filtering%20and%20Extraction%20from%20Summarized%20Sentences.png)
 
 
 In the keyword extraction process, an experiment was conducted with n-grams of various
