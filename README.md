@@ -18,7 +18,7 @@ Tilia with a deeper understanding of growth initiatives but also offered valuabl
 existing portfolio companies, thereby enhancing the firm’s ability to make informed investment
 decisions.
 
-![Intro Image](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/Images for README/Intro_Image.webp)
+![Intro Image](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/Images%20for%20README/Intro_Image.webp)
 
 ### Analysis Goals
 
