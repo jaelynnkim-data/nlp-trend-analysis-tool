@@ -6,7 +6,7 @@ and distribution, was relying heavily on market research to guide investment dec
 value propositions of their portfolio companies. Despite the critical nature of this research, Tilia
 did not have an established approach to systematically gather and analyze research data. This
 often resulted in significant time spent in manually reading earnings call transcripts and investing in consulting with industry
-professionals. Manually eviewing eight years' worth of transcripts from just ten companies took a single employee at Tilia 
+professionals. Manually reviewing eight years' worth of transcripts from just ten companies took a single employee at Tilia 
 approximately 26 working days dedicated solely to reading. Even after
 this extensive effort, the memory retention of the information and accuracy of their summary was not guaranteed.
 To address these challenges, this project leveraged advanced natural language processing
