@@ -284,7 +284,7 @@ Below is a screenshot of the user interface when the user selects "Tyson" and th
 
 Before the user selects any of the keyword boxes, the initial screen after selecting the company and year filter values shows the summary of what the company/companies reported as having happened to them during each year in the selected time frame in the following format:
 
-  Summary Content
+    Summary Content
   - Company, YYYY
 
 Once the user clicks on a keyword that peaks their interest the most, all the sentences that discussed the keyword appear on the right hand side to show the story/context behind why the keyword gained attention, by which company and what year the sentence is from, and below this there is a sentiment score of whether the keyword iself was overall negative or positive, with 0-40 being negative, 40-60 being neutral and 70-100 being positive. 
