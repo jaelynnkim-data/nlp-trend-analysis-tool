@@ -274,7 +274,7 @@ illustrating these findings.
 
 ## User Interface 
 
-Being able to predict trend keywords can be very tricky especially when considering how the next big trend term is often a word that may not have existed before, such as a new technology name or a term that is consisted of multiple words that have their own meaning independently but mean something entirely new when placed next to one another (i.e. cloud database, drop shipping, green energy). 
+Being able to predict trend keywords can be very tricky especially when considering how "the next big" trend term of the upcoming future is often a word that may not have existed before, such as a new technology name or a term that is consisted of multiple words that have their own meaning independently but mean something entirely new when placed next to one another (i.e. cloud database, drop shipping, green energy). 
 
 The resulting trend keyword set was able to capture very important information, but due to the fact that it came along with vague keywords that provides fuzzy information when only viewed as a keyword, it was crucial to develop a human-friendly user interface that is simple, effective, and most importantly, makes the most meaningful keywords immediately eye-catching. 
 
