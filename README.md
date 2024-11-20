@@ -274,9 +274,9 @@ illustrating these findings.
 
 ## User Interface 
 
-Being able to predict trend keywords can be very tricky especially when considering how "the next big" trend term of the upcoming future is often a word that may not have existed before, such as a new technology name or a term that is consisted of multiple words that have their own meaning independently but mean something entirely new when placed next to one another (i.e. cloud database, drop shipping, green energy). 
+Being able to predict trend keywords can be very tricky especially when considering how "the next big" trend term of the upcoming future is often a word that may not have existed before, such as a new technology name, or a term that is consisted of multiple words that have their own meaning independently, but mean something entirely new when placed next to one another (i.e. cloud database, drop shipping, green energy). It required an NLP system and user interface that is able to perform by subtracting from positive space rather than adding to negative space by removing words that are for certain not meaningful while developing a system that would keep the words that have a chance of being potentially crucial in trend detection. 
 
-The resulting trend keyword set was able to capture very important information, but due to the fact that it came along with vague keywords that provides fuzzy information when only viewed as a keyword, it was crucial to develop a human-friendly user interface that is simple, effective, and most importantly, makes the most meaningful keywords immediately eye-catching. 
+Therefore, the resulting trend keyword set was able to capture very important information, but due to the reality that it came along with vague keywords that may provide fuzzy information when only viewed as a keyword, it was crucial to develop a human-friendly user interface that is simple, effective, and most importantly, makes the most meaningful keywords immediately eye-catching while delivering the "why" behind the keyword. 
 
 The resulting design of the user interface is as the below image, and this short walkthrough aims to show how intuitive the design of the NLP system and user interface was intended to be. 
 
