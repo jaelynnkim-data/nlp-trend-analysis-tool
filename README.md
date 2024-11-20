@@ -273,6 +273,24 @@ illustrating these findings.
 
 
 ## User Interface 
+
+Being able to predict trend keywords can be very tricky especially when considering how the next big trend term is often a word that may not have existed before, such as a new technology name or a term that is consisted of multiple words that have their own meaning independently but mean something entirely new when placed next to one another (i.e. cloud database, drop shipping, green energy). 
+
+The resulting trend keyword set was able to capture very important information, but due to the fact that it came along with vague keywords that provides fuzzy information when only viewed as a keyword, it was crucial to develop a human-friendly user interface that is simple, effective, and most importantly, makes the most meaningful keywords immediately eye-catching. 
+
+The resulting design of the user interface is as the below image, and this short walkthrough aims to show how intuitive the design of the NLP system and user interface was intended to be. 
+
+Below is a screenshot of the user interface when the user selects "Tyson" and the "2019", "2020" buttons for the keyword extraction filter criteria, and then selects one of the keyword boxes to see the reason behind why the keyword was selected as potentially important for understanding Tyson during this time period.
+
+In this use case, the selected keyword box was "elections present uncertainty", and when the user clicked on the keyword, all the sentences that discussed the keyword appear on the right hand side to show the story/context behind why the keyword gained attention, when and by which company the sentence is from, and below this there is a sentiment score of whether the keyword was negative or positive, with 0-40 being negative, 40-60 being neutral and 70-100 being positive. 
+
+As seen below, through the keywords displayed as keyword boxes that only display the details behind them when selected by the user, within a short timeframe of approximately 30 seconds, the user is able to notice at a quick glance that the largest topic discussed by Tyson was regarding health concerns, with keywords such as "african swine fever" or "proper personal protective equipment" being featured. 
+
+Below the first section of the user interface, we see the sentiment and word frequency graphs that allows the user to visually study the market outlook based on the topics that they are most interested in, with Tilia having hand-selected the 18 categories that they consistently take into consideration when making investment decisions. 
+
+We can see that for Tyson between the years of 2019 to 2020, 
+
+
 ![UI Image 1](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/Images%20for%20README/UI%20Image%201.png)
 ![UI Image 2](https://github.com/jaelynnkim-data/nlp-trend-analysis-tool/blob/main/Images%20for%20README/UI%20Image%202.png)
 
