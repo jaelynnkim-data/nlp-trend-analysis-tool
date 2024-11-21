@@ -228,7 +228,7 @@ to 5-grams, ensuring that the keywords generated were both precise and contextua
 The topic detection model was evaluated using a confusion matrix, comparing predicted
 topic labels against a manually labeled test set. The results revealed a high level of accuracy
 (0.9076), with strong performance in identifying topics such as "Food Safety" and "Divestiture." However, the model did show some misclassifications, such as confusing "Sustainability" with
-"Investment" and "Packaging." These errors highlighted areas for potential improvement,
+"Investment" and "Food Safety." These errors highlighted areas for potential improvement,
 particularly in distinguishing between closely related topics. The confusion matrix provided
 insights into where the model excelled and where it needed refinement, particularly in handling
 class imbalances, such as the underrepresentation of the "Distribution" topic.
